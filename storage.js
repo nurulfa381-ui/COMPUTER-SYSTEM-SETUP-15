@@ -1,5 +1,6 @@
 const C01K15Storage = (() => {
   const KEY = "c01_kp15_profile_v1";
+  const SESSION_KEY = "c01k15_session";
 
   function defaults() {
     return {
@@ -10,7 +11,6 @@ const C01K15Storage = (() => {
 
       xp: 50,
       coins: 0,
-
       kp15Progress: 0,
 
       scores: {},
@@ -28,12 +28,27 @@ const C01K15Storage = (() => {
     try {
       const raw = localStorage.getItem(KEY);
 
-      return raw
-        ? {
-            ...defaults(),
-            ...JSON.parse(raw)
-          }
-        : null;
+      if (!raw) {
+        return null;
+      }
+
+      const saved = JSON.parse(raw);
+
+      return {
+        ...defaults(),
+        ...saved,
+
+        scores: saved.scores || {},
+        attempts: saved.attempts || {},
+        pendingAssessments:
+          saved.pendingAssessments || {},
+        officialMarks:
+          saved.officialMarks || {},
+
+        badges: Array.isArray(saved.badges)
+          ? saved.badges
+          : ["first-login"]
+      };
     } catch (error) {
       console.error(
         "Gagal membaca profil KP15:",
@@ -44,7 +59,7 @@ const C01K15Storage = (() => {
     }
   }
 
-  function saveProfile(data) {
+  function saveProfile(data = {}) {
     try {
       const current =
         getProfile() || defaults();
@@ -53,25 +68,27 @@ const C01K15Storage = (() => {
         ...current,
         ...data,
 
-        scores: data?.scores || current.scores || {},
+        scores:
+          data.scores ||
+          current.scores ||
+          {},
+
         attempts:
-          data?.attempts ||
+          data.attempts ||
           current.attempts ||
           {},
 
         pendingAssessments:
-          data?.pendingAssessments ||
+          data.pendingAssessments ||
           current.pendingAssessments ||
           {},
 
         officialMarks:
-          data?.officialMarks ||
+          data.officialMarks ||
           current.officialMarks ||
           {},
 
-        badges: Array.isArray(
-          data?.badges
-        )
+        badges: Array.isArray(data.badges)
           ? data.badges
           : current.badges || [
               "first-login"
@@ -87,7 +104,7 @@ const C01K15Storage = (() => {
       );
 
       sessionStorage.setItem(
-        "c01k15_session",
+        SESSION_KEY,
         "active"
       );
 
@@ -103,18 +120,17 @@ const C01K15Storage = (() => {
   }
 
   function createProfile({
-    name,
-    id,
-    avatar,
-    language
-  }) {
+    name = "",
+    id = "",
+    avatar = "🧑‍💻",
+    language = "ms"
+  } = {}) {
     return saveProfile({
       ...defaults(),
-
-      name: name || "",
-      id: id || "",
-      avatar: avatar || "🧑‍💻",
-      language: language || "ms"
+      name,
+      id,
+      avatar,
+      language
     });
   }
 
@@ -148,7 +164,7 @@ const C01K15Storage = (() => {
     return profile;
   }
 
-  function updateProgress(progress) {
+  function updateProgress(progress = 0) {
     const profile = requireProfile();
 
     profile.kp15Progress = Math.max(
@@ -184,11 +200,78 @@ const C01K15Storage = (() => {
 
     profile.attempts[missionId] =
       Number(
-        profile.attempts[
-          missionId
-        ] || 0
+        profile.attempts[missionId] || 0
       ) + 1;
 
     saveProfile(profile);
 
-    return profile.at
+    return profile.attempts[missionId];
+  }
+
+  function addXp(amount = 0) {
+    const profile = requireProfile();
+
+    profile.xp =
+      Number(profile.xp || 0) +
+      Number(amount || 0);
+
+    saveProfile(profile);
+
+    return profile.xp;
+  }
+
+  function addCoins(amount = 0) {
+    const profile = requireProfile();
+
+    profile.coins =
+      Number(profile.coins || 0) +
+      Number(amount || 0);
+
+    saveProfile(profile);
+
+    return profile.coins;
+  }
+
+  function addBadge(badgeId) {
+    const profile = requireProfile();
+
+    profile.badges =
+      profile.badges || [];
+
+    if (
+      badgeId &&
+      !profile.badges.includes(
+        badgeId
+      )
+    ) {
+      profile.badges.push(
+        badgeId
+      );
+    }
+
+    saveProfile(profile);
+
+    return profile.badges;
+  }
+
+  function clearSession() {
+    localStorage.removeItem(KEY);
+    sessionStorage.removeItem(
+      SESSION_KEY
+    );
+  }
+
+  return {
+    getProfile,
+    saveProfile,
+    createProfile,
+    requireProfile,
+    updateProgress,
+    saveScore,
+    addAttempt,
+    addXp,
+    addCoins,
+    addBadge,
+    clearSession
+  };
+})();
