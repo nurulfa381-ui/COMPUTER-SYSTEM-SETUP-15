@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KT15 - Penyediaan Laporan Sistem Komputer</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css?v=1">
+</head>
+
+<body>
+  <main class="kt-page">
+
+    <header class="panel header-panel">
+      <div>
+        <p class="eyebrow">IT-020-3:2013-C01/KT(15/15)</p>
+        <h1>PENYEDIAAN LAPORAN SISTEM KOMPUTER</h1>
+        <p>Markah penuh: 100% • Lulus: 60% • Bahasa Melayu Malaysia</p>
+      </div>
+
+      <div class="header-actions">
+        <button onclick="location.href='../../kp/kp15/index.html'">KEMBALI KP15</button>
+        <button onclick="toggleFullscreen()">SKRIN PENUH</button>
+      </div>
+    </header>
+
+    <section class="panel candidate-panel">
+      <div>
+        <span>Nama Pelatih</span>
+        <strong id="candidateName">Pelatih</strong>
+      </div>
+
+      <div>
+        <span>ID Pelatih</span>
+        <strong id="candidateId">-</strong>
+      </div>
+
+      <div>
+        <span>Percubaan</span>
+        <strong id="attemptNo">1</strong>
+      </div>
+
+      <div>
+        <span>Status</span>
+        <strong id="candidateStatus">BELUM DINILAI</strong>
+      </div>
+    </section>
+
+    <section class="panel">
+      <p class="eyebrow">BAHAGIAN A • 40 MARKAH</p>
+      <h2>SOALAN OBJEKTIF</h2>
+      <p>Jawab semua soalan. Kedudukan pilihan jawapan diacak secara automatik.</p>
+      <div id="mcqContainer"></div>
+    </section>
+
+    <section class="panel">
+      <p class="eyebrow">BAHAGIAN B • 20 MARKAH</p>
+      <h2>SOALAN PADANAN</h2>
+      <p>Padankan istilah dengan pernyataan yang tepat.</p>
+      <div id="matchingContainer"></div>
+    </section>
+
+    <section class="panel">
+      <p class="eyebrow">BAHAGIAN C • 20 MARKAH</p>
+      <h2>SUSUN LANGKAH PENYEDIAAN LAPORAN</h2>
+      <p>Gunakan butang atas dan bawah untuk menyusun langkah.</p>
+      <div id="sequenceContainer"></div>
+    </section>
+
+    <section class="panel">
+      <p class="eyebrow">BAHAGIAN D • 20 MARKAH</p>
+      <h2>SIMULASI LAPORAN SISTEM KOMPUTER</h2>
+
+      <div class="form-grid">
+        <label>
+          Nama pengguna
+          <input id="reportUser" type="text" placeholder="Masukkan nama pengguna">
+        </label>
+
+        <label>
+          Nombor aset
+          <input id="reportAsset" type="text" placeholder="Contoh: AST-C01-015">
+        </label>
+
+        <label>
+          Nombor siri
+          <input id="reportSerial" type="text" placeholder="Contoh: SN-2026-015">
+        </label>
+
+        <label>
+          Kerja yang dilakukan
+          <input id="reportWork" type="text" placeholder="Nyatakan kerja yang dilakukan">
+        </label>
+
+        <label>
+          Keputusan UAT
+          <select id="reportUat">
+            <option value="">Pilih keputusan</option>
+            <option value="Lulus">Lulus</option>
+            <option value="Gagal">Gagal</option>
+            <option value="Uji semula">Uji semula</option>
+          </select>
+        </label>
+
+        <label>
+          Ulasan
+          <textarea id="reportComment" rows="4" placeholder="Tulis ulasan ringkas"></textarea>
+        </label>
+      </div>
+    </section>
+
+    <section class="panel submit-panel">
+      <button id="submitButton" class="primary-button" onclick="submitKT15()">HANTAR JAWAPAN</button>
+      <button onclick="resetCurrentAttempt()">SET SEMULA JAWAPAN</button>
+      <button onclick="location.href='../../dashboard.html'">DASHBOARD</button>
+
+      <div id="resultPanel"></div>
+    </section>
+
+  </main>
+
+  <script src="../../storage.js?v=1"></script>
+  <script src="script.js?v=1"></script>
+</body>
+</html>
