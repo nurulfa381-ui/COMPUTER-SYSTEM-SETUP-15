@@ -3,13 +3,266 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>KT15 - Penyediaan Laporan Sistem Komputer</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#020712;
+      --bg2:#08243c;
+      --panel:#123d5f;
+      --panel2:#1a4e76;
+      --text:#ffffff;
+      --muted:#e7f0f7;
+      --orange:#fbbf24;
+      --green:#34d399;
+      --red:#fb7185;
+      --blue:#38bdf8;
+      --border:#5a86aa;
+    }
 
-  <link rel="stylesheet" href="style.css?v=1">
+    *{box-sizing:border-box}
+
+    html{
+      -webkit-text-size-adjust:100%;
+    }
+
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:Arial,sans-serif;
+      font-size:20px;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 10% 5%,rgba(56,189,248,.18),transparent 28%),
+        linear-gradient(135deg,var(--bg),var(--bg2));
+    }
+
+    button,input,select,textarea{
+      font:inherit;
+    }
+
+    button{
+      cursor:pointer;
+      touch-action:manipulation;
+      border:2px solid #60a5fa;
+      border-radius:13px;
+      padding:13px 18px;
+      color:#fff;
+      background:#1d4ed8;
+      font-weight:800;
+    }
+
+    button:hover{filter:brightness(1.08)}
+
+    h1,h2,h3,strong{font-weight:800}
+
+    h1{
+      margin:.15em 0;
+      font-size:clamp(2.3rem,5vw,4.8rem);
+      line-height:1.05;
+    }
+
+    h2{font-size:clamp(1.8rem,4vw,3rem)}
+
+    .kt-page{
+      width:min(1500px,100%);
+      margin:auto;
+      padding:22px;
+    }
+
+    .panel{
+      margin-bottom:18px;
+      padding:28px;
+      border:2px solid var(--border);
+      border-radius:25px;
+      background:linear-gradient(145deg,#123d5f,#0a263f);
+      box-shadow:0 25px 70px rgba(0,0,0,.38);
+    }
+
+    .header-panel{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:18px;
+      flex-wrap:wrap;
+    }
+
+    .header-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .eyebrow{
+      margin:0;
+      color:#7dd3fc;
+      font-weight:800;
+      letter-spacing:.1em;
+    }
+
+    .candidate-panel{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:14px;
+    }
+
+    .candidate-panel>div{
+      padding:16px;
+      border:2px solid var(--border);
+      border-radius:16px;
+      background:#1a4e76;
+    }
+
+    .candidate-panel span{
+      display:block;
+      color:var(--muted);
+    }
+
+    .candidate-panel strong{color:var(--orange)}
+
+    .question-card,
+    .match-row,
+    .sequence-item{
+      margin:14px 0;
+      padding:18px;
+      border:2px solid var(--border);
+      border-radius:18px;
+      background:#123d5f;
+    }
+
+    .question-card p{font-weight:800}
+
+    .answer-option{
+      display:block;
+      margin:10px 0;
+      padding:14px;
+      border:2px solid transparent;
+      border-radius:13px;
+      background:#1a4e76;
+    }
+
+    .answer-option:hover{border-color:#7dd3fc}
+
+    .answer-option input{accent-color:var(--orange)}
+
+    .match-row{
+      display:grid;
+      grid-template-columns:1fr 1.4fr;
+      gap:15px;
+      align-items:center;
+    }
+
+    select,input,textarea{
+      width:100%;
+      padding:13px;
+      border:2px solid var(--border);
+      border-radius:12px;
+      color:#fff;
+      background:#071c2e;
+      pointer-events:auto;
+      -webkit-user-select:text;
+      user-select:text;
+      font-size:16px;
+    }
+
+    select option{
+      color:#111827;
+      background:#fff;
+    }
+
+    .sequence-list{
+      display:grid;
+      gap:12px;
+    }
+
+    .sequence-item{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:14px;
+    }
+
+    .sequence-controls{
+      display:flex;
+      gap:8px;
+    }
+
+    .sequence-controls button{padding:8px 12px}
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:16px;
+    }
+
+    .form-grid label{
+      display:block;
+      color:#fff;
+      font-weight:700;
+    }
+
+    .form-grid input,
+    .form-grid select,
+    .form-grid textarea{
+      margin-top:8px;
+    }
+
+    .submit-panel{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .primary-button{
+      color:#111827;
+      border-color:#fde68a;
+      background:linear-gradient(135deg,#fde68a,var(--orange));
+    }
+
+    #resultPanel{width:100%}
+
+    .result-card{
+      margin-top:16px;
+      padding:22px;
+      border-radius:18px;
+      background:#071c2e;
+    }
+
+    .result-card.pass{border-left:8px solid var(--orange)}
+    .result-card.fail{border-left:8px solid var(--red)}
+
+    .score-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:10px;
+      margin-top:15px;
+    }
+
+    .score-grid>div{
+      padding:13px;
+      border:2px solid var(--border);
+      border-radius:12px;
+      background:#123d5f;
+    }
+
+    @media(max-width:850px){
+      .candidate-panel,.form-grid,.score-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+      .match-row{grid-template-columns:1fr}
+    }
+
+    @media(max-width:600px){
+      body{font-size:18px}
+      .kt-page{padding:10px}
+      .candidate-panel,.form-grid,.score-grid{grid-template-columns:1fr}
+      .sequence-item{align-items:flex-start;flex-direction:column}
+      .submit-panel button{width:100%}
+    }
+  </style>
 </head>
 
 <body>
@@ -19,55 +272,37 @@
       <div>
         <p class="eyebrow">IT-020-3:2013-C01/KT(15/15)</p>
         <h1>PENYEDIAAN LAPORAN SISTEM KOMPUTER</h1>
-        <p>Markah penuh: 100% • Lulus: 60% • Bahasa Melayu Malaysia</p>
+        <p>Markah penuh: 100% • Lulus: 60%</p>
       </div>
 
       <div class="header-actions">
-        <button onclick="location.href='../../kp/kp15/index.html'">KEMBALI KP15</button>
-        <button onclick="toggleFullscreen()">SKRIN PENUH</button>
+        <button type="button" onclick="location.href='../../kp/kp15/index.html'">KEMBALI KP15</button>
+        <button type="button" onclick="toggleFullscreen()">SKRIN PENUH</button>
       </div>
     </header>
 
     <section class="panel candidate-panel">
-      <div>
-        <span>Nama Pelatih</span>
-        <strong id="candidateName">Pelatih</strong>
-      </div>
-
-      <div>
-        <span>ID Pelatih</span>
-        <strong id="candidateId">-</strong>
-      </div>
-
-      <div>
-        <span>Percubaan</span>
-        <strong id="attemptNo">1</strong>
-      </div>
-
-      <div>
-        <span>Status</span>
-        <strong id="candidateStatus">BELUM DINILAI</strong>
-      </div>
+      <div><span>Nama Pelatih</span><strong id="candidateName">Pelatih</strong></div>
+      <div><span>ID Pelatih</span><strong id="candidateId">-</strong></div>
+      <div><span>Percubaan</span><strong id="attemptNo">1</strong></div>
+      <div><span>Status</span><strong id="candidateStatus">BELUM DINILAI</strong></div>
     </section>
 
     <section class="panel">
       <p class="eyebrow">BAHAGIAN A • 40 MARKAH</p>
       <h2>SOALAN OBJEKTIF</h2>
-      <p>Jawab semua soalan. Kedudukan pilihan jawapan diacak secara automatik.</p>
       <div id="mcqContainer"></div>
     </section>
 
     <section class="panel">
       <p class="eyebrow">BAHAGIAN B • 20 MARKAH</p>
       <h2>SOALAN PADANAN</h2>
-      <p>Padankan istilah dengan pernyataan yang tepat.</p>
       <div id="matchingContainer"></div>
     </section>
 
     <section class="panel">
       <p class="eyebrow">BAHAGIAN C • 20 MARKAH</p>
       <h2>SUSUN LANGKAH PENYEDIAAN LAPORAN</h2>
-      <p>Gunakan butang atas dan bawah untuk menyusun langkah.</p>
       <div id="sequenceContainer"></div>
     </section>
 
@@ -76,28 +311,23 @@
       <h2>SIMULASI LAPORAN SISTEM KOMPUTER</h2>
 
       <div class="form-grid">
-        <label>
-          Nama pengguna
+        <label>Nama pengguna
           <input id="reportUser" type="text" placeholder="Masukkan nama pengguna">
         </label>
 
-        <label>
-          Nombor aset
+        <label>Nombor aset
           <input id="reportAsset" type="text" placeholder="Contoh: AST-C01-015">
         </label>
 
-        <label>
-          Nombor siri
+        <label>Nombor siri
           <input id="reportSerial" type="text" placeholder="Contoh: SN-2026-015">
         </label>
 
-        <label>
-          Kerja yang dilakukan
+        <label>Kerja yang dilakukan
           <input id="reportWork" type="text" placeholder="Nyatakan kerja yang dilakukan">
         </label>
 
-        <label>
-          Keputusan UAT
+        <label>Keputusan UAT
           <select id="reportUat">
             <option value="">Pilih keputusan</option>
             <option value="Lulus">Lulus</option>
@@ -106,24 +336,223 @@
           </select>
         </label>
 
-        <label>
-          Ulasan
+        <label>Ulasan
           <textarea id="reportComment" rows="4" placeholder="Tulis ulasan ringkas"></textarea>
         </label>
       </div>
     </section>
 
     <section class="panel submit-panel">
-      <button id="submitButton" class="primary-button" onclick="submitKT15()">HANTAR JAWAPAN</button>
-      <button onclick="resetCurrentAttempt()">SET SEMULA JAWAPAN</button>
-      <button onclick="location.href='../../dashboard.html'">DASHBOARD</button>
-
+      <button id="submitButton" class="primary-button" type="button" onclick="submitKT15()">HANTAR JAWAPAN</button>
+      <button type="button" onclick="location.reload()">SET SEMULA JAWAPAN</button>
       <div id="resultPanel"></div>
     </section>
-
   </main>
 
-  <script src="../../storage.js?v=1"></script>
-  <script src="script.js?v=1"></script>
+  <script>
+    const PROFILE_KEY = "c01_student_profile";
+    const KT15_KEY = "c01_kt15_result";
+
+    const MCQ = [
+      ["Apakah maksud laporan?","Kenyataan formal yang menyampaikan maklumat lengkap",["Kenyataan formal yang menyampaikan maklumat lengkap","Senarai harga peralatan","Arahan pemasangan sahaja","Senarai nama pengguna"]],
+      ["Tujuan dokumentasi aset syarikat?","Mengesan aset, lokasi dan keadaan",["Mengesan aset, lokasi dan keadaan","Meningkatkan Internet","Menggantikan sistem operasi","Memadam semua data"]],
+      ["Contoh aset ketara?","Komputer dan pencetak",["Komputer dan pencetak","Lesen perisian","Hak cipta","Nama domain"]],
+      ["Mengapakah pemacu peranti diperlukan?","Membolehkan perkakasan berfungsi dengan betul",["Membolehkan perkakasan berfungsi dengan betul","Menambah RAM fizikal","Menggantikan kad grafik","Menghapus nombor siri"]],
+      ["Fungsi sandaran data?","Melindungi data daripada kehilangan",["Melindungi data daripada kehilangan","Mengurangkan saiz monitor","Menggantikan papan kekunci","Meningkatkan voltan"]],
+      ["Kad jaminan digunakan untuk?","Membuktikan hak pembaikan atau penggantian",["Membuktikan hak pembaikan atau penggantian","Mengukur suhu CPU","Menguji kabel","Menyusun ikon"]],
+      ["Siapakah yang menjalankan UAT?","Pengguna sebenar",["Pengguna sebenar","Pereka logo","Pembekal elektrik","Pengawal keselamatan"]],
+      ["Kandungan penting laporan UAT?","Keputusan dijangka dan keputusan sebenar",["Keputusan dijangka dan keputusan sebenar","Senarai makanan","Warna meja","Jadual cuti"]],
+      ["Apakah rajah terbina?","Rajah akhir keadaan sebenar selepas perubahan",["Rajah akhir keadaan sebenar selepas perubahan","Rajah sebelum projek","Gambar hiasan","Senarai pembekal"]],
+      ["Apakah rajah skematik?","Rajah simbol yang menunjukkan hubungan komponen",["Rajah simbol yang menunjukkan hubungan komponen","Gambar realistik sahaja","Jadual kewangan","Senarai inventori makanan"]]
+    ];
+
+    const MATCHING = [
+      ["Dokumentasi aset","Rekod terperinci harta atau aset syarikat"],
+      ["Kad jaminan","Dokumen hak pembaikan atau penggantian"],
+      ["Laporan UAT","Rekod keputusan ujian pengguna sebenar"],
+      ["Rajah terbina","Rajah akhir keadaan sebenar selepas perubahan"],
+      ["Rajah skematik","Rajah simbol hubungan komponen"]
+    ];
+
+    const CORRECT_SEQUENCE = [
+      "Kumpulkan maklumat dan bukti",
+      "Semak ketepatan data",
+      "Susun maklumat mengikut format",
+      "Sediakan laporan",
+      "Dapatkan pengesahan",
+      "Simpan dan arkibkan laporan"
+    ];
+
+    let sequence = [];
+
+    function shuffle(arr){
+      const a=[...arr];
+      for(let i=a.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [a[i],a[j]]=[a[j],a[i]];
+      }
+      return a;
+    }
+
+    function loadProfile(){
+      try{
+        return JSON.parse(localStorage.getItem(PROFILE_KEY)||"null");
+      }catch(e){
+        return null;
+      }
+    }
+
+    function saveProfile(profile){
+      localStorage.setItem(PROFILE_KEY,JSON.stringify(profile));
+    }
+
+    document.addEventListener("DOMContentLoaded",()=>{
+      const p=loadProfile();
+      if(p){
+        candidateName.textContent=p.name||"Pelatih";
+        candidateId.textContent=p.id||"-";
+        attemptNo.textContent=(p.attempts?.[15]||0)+1;
+      }
+      renderMCQ();
+      renderMatching();
+      renderSequence();
+      restoreResult();
+    });
+
+    function renderMCQ(){
+      mcqContainer.innerHTML=shuffle(MCQ).map((q,i)=>`
+        <article class="question-card" data-answer="${encodeURIComponent(q[1])}">
+          <p>${i+1}. ${q[0]}</p>
+          ${shuffle(q[2]).map(opt=>`
+            <label class="answer-option">
+              <input type="radio" name="q${i}" value="${encodeURIComponent(opt)}">
+              ${opt}
+            </label>`).join("")}
+        </article>`).join("");
+    }
+
+    function renderMatching(){
+      const options=MATCHING.map(x=>x[1]);
+      matchingContainer.innerHTML=shuffle(MATCHING).map((x,i)=>`
+        <div class="match-row" data-answer="${encodeURIComponent(x[1])}">
+          <strong>${i+1}. ${x[0]}</strong>
+          <select>
+            <option value="">Pilih jawapan</option>
+            ${shuffle(options).map(o=>`<option value="${encodeURIComponent(o)}">${o}</option>`).join("")}
+          </select>
+        </div>`).join("");
+    }
+
+    function renderSequence(){
+      sequence=shuffle(CORRECT_SEQUENCE);
+      if(sequence.every((x,i)=>x===CORRECT_SEQUENCE[i])) sequence=shuffle(CORRECT_SEQUENCE);
+      drawSequence();
+    }
+
+    function drawSequence(){
+      sequenceContainer.innerHTML=`<div class="sequence-list">
+        ${sequence.map((x,i)=>`
+          <div class="sequence-item">
+            <span>${x}</span>
+            <div class="sequence-controls">
+              <button type="button" onclick="moveStep(${i},-1)">▲</button>
+              <button type="button" onclick="moveStep(${i},1)">▼</button>
+            </div>
+          </div>`).join("")}
+      </div>`;
+    }
+
+    function moveStep(i,d){
+      const n=i+d;
+      if(n<0||n>=sequence.length)return;
+      [sequence[i],sequence[n]]=[sequence[n],sequence[i]];
+      drawSequence();
+    }
+
+    function complete(){
+      const mcq=[...document.querySelectorAll(".question-card")].every(c=>c.querySelector("input:checked"));
+      const match=[...document.querySelectorAll(".match-row select")].every(s=>s.value);
+      const report=reportUser.value.trim()&&reportAsset.value.trim()&&reportSerial.value.trim()&&reportWork.value.trim()&&reportUat.value&&reportComment.value.trim();
+      return mcq&&match&&report;
+    }
+
+    function submitKT15(){
+      if(!complete()){
+        alert("Sila jawab semua soalan dan lengkapkan simulasi laporan.");
+        return;
+      }
+
+      let a=0;
+      document.querySelectorAll(".question-card").forEach(c=>{
+        if(c.querySelector("input:checked")?.value===c.dataset.answer)a+=4;
+      });
+
+      let b=0;
+      document.querySelectorAll(".match-row").forEach(r=>{
+        if(r.querySelector("select").value===r.dataset.answer)b+=4;
+      });
+
+      const correctSteps=sequence.filter((x,i)=>x===CORRECT_SEQUENCE[i]).length;
+      const c=Math.round(correctSteps/CORRECT_SEQUENCE.length*20);
+
+      let d=0;
+      if(reportUser.value.trim().length>=3)d+=3;
+      if(reportAsset.value.trim().length>=4)d+=4;
+      if(reportSerial.value.trim().length>=4)d+=4;
+      if(reportWork.value.trim().length>=5)d+=4;
+      if(reportUat.value)d+=3;
+      if(reportComment.value.trim().length>=5)d+=2;
+
+      const total=a+b+c+d;
+      const passed=total>=60;
+      const result={score:total,sectionA:a,sectionB:b,sectionC:c,sectionD:d,passed,status:passed?"MENUNGGU_PENGESAHAN":"BELUM_TERAMPIL",submittedAt:new Date().toISOString()};
+      localStorage.setItem(KT15_KEY,JSON.stringify(result));
+
+      const p=loadProfile()||{name:"Pelatih",id:"-",xp:50,coins:10,attempts:{},scores:{},pendingAssessments:{}};
+      p.attempts=p.attempts||{};
+      p.scores=p.scores||{};
+      p.pendingAssessments=p.pendingAssessments||{};
+      p.attempts[15]=(p.attempts[15]||0)+1;
+      p.scores[15]=total;
+      if(passed){
+        p.pendingAssessments[15]=result;
+        p.xp=(p.xp||0)+150;
+        p.coins=(p.coins||0)+30;
+      }
+      saveProfile(p);
+      showResult(result);
+    }
+
+    function showResult(r){
+      candidateStatus.textContent=r.passed?"MENUNGGU PENGESAHAN":"BELUM TERAMPIL";
+      resultPanel.innerHTML=`
+        <div class="result-card ${r.passed?"pass":"fail"}">
+          <h2>Markah: ${r.score}%</h2>
+          <div class="score-grid">
+            <div>Bahagian A<br><strong>${r.sectionA}/40</strong></div>
+            <div>Bahagian B<br><strong>${r.sectionB}/20</strong></div>
+            <div>Bahagian C<br><strong>${r.sectionC}/20</strong></div>
+            <div>Bahagian D<br><strong>${r.sectionD}/20</strong></div>
+          </div>
+          <h3>${r.passed?"⏳ MENUNGGU PENGESAHAN PEGAWAI PENILAI":"❌ BELUM TERAMPIL"}</h3>
+        </div>`;
+      if(r.passed){
+        submitButton.disabled=true;
+        submitButton.textContent="MENUNGGU PENGESAHAN";
+      }
+    }
+
+    function restoreResult(){
+      try{
+        const r=JSON.parse(localStorage.getItem(KT15_KEY)||"null");
+        if(r?.passed)showResult(r);
+      }catch(e){}
+    }
+
+    function toggleFullscreen(){
+      if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();
+      else document.exitFullscreen?.();
+    }
+  </script>
 </body>
 </html>
