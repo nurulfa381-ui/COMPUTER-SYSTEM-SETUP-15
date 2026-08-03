@@ -1,8 +1,7 @@
-const C01Storage = {
-  profileKey: "c01_student_profile",
-  languageKey: "c01_language",
+const C01K15Storage = (() => {
+  const KEY = "c01_kp15_profile_v1";
 
-  defaultProfile() {
+  function defaults() {
     return {
       name: "",
       id: "",
@@ -10,139 +9,117 @@ const C01Storage = {
       language: "ms",
 
       xp: 50,
-      coins: 10,
-      unlocked: 15,
+      coins: 0,
 
-      completed: [],
+      kp15Progress: 0,
+
       scores: {},
       attempts: {},
-      ktDetails: {},
       pendingAssessments: {},
       officialMarks: {},
 
-      professionalScore: 0,
       badges: ["first-login"],
 
-      workPerformance: {
-        safety: 0,
-        procedure: 0,
-        accuracy: 0,
-        quality: 0,
-        documentation: 0
-      },
-
-      createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
-  },
+  }
 
-  loadProfile() {
+  function getProfile() {
     try {
-      const raw = localStorage.getItem(this.profileKey);
+      const raw = localStorage.getItem(KEY);
 
-      if (!raw) {
-        return null;
-      }
-
-      const saved = JSON.parse(raw);
-
-      return {
-        ...this.defaultProfile(),
-        ...saved,
-
-        completed: Array.isArray(saved.completed)
-          ? saved.completed
-          : [],
-
-        badges: Array.isArray(saved.badges)
-          ? saved.badges
-          : ["first-login"],
-
-        scores: saved.scores || {},
-        attempts: saved.attempts || {},
-        ktDetails: saved.ktDetails || {},
-        pendingAssessments: saved.pendingAssessments || {},
-        officialMarks: saved.officialMarks || {},
-
-        workPerformance: {
-          ...this.defaultProfile().workPerformance,
-          ...(saved.workPerformance || {})
-        },
-
-        unlocked: Math.max(
-          Number(saved.unlocked || 1),
-          15
-        )
-      };
+      return raw
+        ? {
+            ...defaults(),
+            ...JSON.parse(raw)
+          }
+        : null;
     } catch (error) {
-      console.error("Gagal membaca profil:", error);
+      console.error(
+        "Gagal membaca profil KP15:",
+        error
+      );
+
       return null;
     }
-  },
+  }
 
-  saveProfile(profile) {
+  function saveProfile(data) {
     try {
-      const normalized = {
-        ...this.defaultProfile(),
-        ...profile,
+      const current =
+        getProfile() || defaults();
 
-        unlocked: Math.max(
-          Number(profile?.unlocked || 1),
-          15
-        ),
+      const profile = {
+        ...current,
+        ...data,
 
-        completed: Array.isArray(profile?.completed)
-          ? profile.completed
-          : [],
+        scores: data?.scores || current.scores || {},
+        attempts:
+          data?.attempts ||
+          current.attempts ||
+          {},
 
-        badges: Array.isArray(profile?.badges)
-          ? profile.badges
-          : ["first-login"],
+        pendingAssessments:
+          data?.pendingAssessments ||
+          current.pendingAssessments ||
+          {},
 
-        scores: profile?.scores || {},
-        attempts: profile?.attempts || {},
-        ktDetails: profile?.ktDetails || {},
-        pendingAssessments: profile?.pendingAssessments || {},
-        officialMarks: profile?.officialMarks || {},
+        officialMarks:
+          data?.officialMarks ||
+          current.officialMarks ||
+          {},
 
-        updatedAt: new Date().toISOString()
+        badges: Array.isArray(
+          data?.badges
+        )
+          ? data.badges
+          : current.badges || [
+              "first-login"
+            ],
+
+        updatedAt:
+          new Date().toISOString()
       };
 
       localStorage.setItem(
-        this.profileKey,
-        JSON.stringify(normalized)
+        KEY,
+        JSON.stringify(profile)
       );
 
-      return normalized;
+      sessionStorage.setItem(
+        "c01k15_session",
+        "active"
+      );
+
+      return profile;
     } catch (error) {
-      console.error("Gagal menyimpan profil:", error);
+      console.error(
+        "Gagal menyimpan profil KP15:",
+        error
+      );
+
       return null;
     }
-  },
+  }
 
-  createProfile({
+  function createProfile({
     name,
     id,
     avatar,
     language
   }) {
-    return {
-      ...this.defaultProfile(),
+    return saveProfile({
+      ...defaults(),
 
       name: name || "",
       id: id || "",
       avatar: avatar || "🧑‍💻",
-      language: language || "ms",
+      language: language || "ms"
+    });
+  }
 
-      unlocked: 15,
-
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    };
-  },
-
-  requireProfile() {
-    const profile = this.loadProfile();
+  function requireProfile() {
+    const profile = getProfile();
 
     if (
       !profile ||
@@ -164,64 +141,31 @@ const C01Storage = {
       }
 
       throw new Error(
-        "Profil pelatih diperlukan."
+        "Profil pelatih belum lengkap."
       );
     }
 
     return profile;
-  },
+  }
 
-  updateProfile(updates = {}) {
-    const current =
-      this.loadProfile() ||
-      this.defaultProfile();
+  function updateProgress(progress) {
+    const profile = requireProfile();
 
-    return this.saveProfile({
-      ...current,
-      ...updates,
-
-      unlocked: Math.max(
-        Number(
-          updates.unlocked ??
-          current.unlocked ??
-          1
-        ),
-        15
-      )
-    });
-  },
-
-  setLanguage(language = "ms") {
-    localStorage.setItem(
-      this.languageKey,
-      language
+    profile.kp15Progress = Math.max(
+      Number(
+        profile.kp15Progress || 0
+      ),
+      Number(progress || 0)
     );
 
-    const profile = this.loadProfile();
+    return saveProfile(profile);
+  }
 
-    if (profile) {
-      profile.language = language;
-      this.saveProfile(profile);
-    }
-
-    return language;
-  },
-
-  getLanguage() {
-    const profile = this.loadProfile();
-
-    return (
-      profile?.language ||
-      localStorage.getItem(
-        this.languageKey
-      ) ||
-      "ms"
-    );
-  },
-
-  saveScore(missionId, score) {
-    const profile =
-      this.requireProfile();
+  function saveScore(
+    missionId,
+    score
+  ) {
+    const profile = requireProfile();
 
     profile.scores =
       profile.scores || {};
@@ -229,146 +173,22 @@ const C01Storage = {
     profile.scores[missionId] =
       Number(score) || 0;
 
-    return this.saveProfile(profile);
-  },
+    return saveProfile(profile);
+  }
 
-  saveAttempt(missionId) {
-    const profile =
-      this.requireProfile();
+  function addAttempt(missionId) {
+    const profile = requireProfile();
 
     profile.attempts =
       profile.attempts || {};
 
     profile.attempts[missionId] =
       Number(
-        profile.attempts[missionId] || 0
+        profile.attempts[
+          missionId
+        ] || 0
       ) + 1;
 
-    this.saveProfile(profile);
+    saveProfile(profile);
 
-    return profile.attempts[missionId];
-  },
-
-  addCompletedMission(missionId) {
-    const profile =
-      this.requireProfile();
-
-    profile.completed =
-      profile.completed || [];
-
-    if (
-      !profile.completed.includes(
-        missionId
-      )
-    ) {
-      profile.completed.push(
-        missionId
-      );
-    }
-
-    return this.saveProfile(profile);
-  },
-
-  unlockMission(missionId) {
-    const profile =
-      this.requireProfile();
-
-    profile.unlocked = Math.max(
-      Number(profile.unlocked || 15),
-      Number(missionId || 15),
-      15
-    );
-
-    return this.saveProfile(profile);
-  },
-
-  addXp(amount = 0) {
-    const profile =
-      this.requireProfile();
-
-    profile.xp =
-      Number(profile.xp || 0) +
-      Number(amount || 0);
-
-    this.saveProfile(profile);
-
-    return profile.xp;
-  },
-
-  addCoins(amount = 0) {
-    const profile =
-      this.requireProfile();
-
-    profile.coins =
-      Number(profile.coins || 0) +
-      Number(amount || 0);
-
-    this.saveProfile(profile);
-
-    return profile.coins;
-  },
-
-  addBadge(badgeId) {
-    const profile =
-      this.requireProfile();
-
-    profile.badges =
-      profile.badges || [];
-
-    if (
-      badgeId &&
-      !profile.badges.includes(
-        badgeId
-      )
-    ) {
-      profile.badges.push(
-        badgeId
-      );
-    }
-
-    this.saveProfile(profile);
-
-    return profile.badges;
-  },
-
-  savePendingAssessment(
-    missionId,
-    record
-  ) {
-    const profile =
-      this.requireProfile();
-
-    profile.pendingAssessments =
-      profile.pendingAssessments || {};
-
-    profile.pendingAssessments[
-      missionId
-    ] = record;
-
-    return this.saveProfile(profile);
-  },
-
-  clearSession() {
-    localStorage.removeItem(
-      this.profileKey
-    );
-
-    sessionStorage.clear();
-  },
-
-  resetProgress() {
-    const current =
-      this.requireProfile();
-
-    const reset =
-      this.createProfile({
-        name: current.name,
-        id: current.id,
-        avatar: current.avatar,
-        language:
-          current.language || "ms"
-      });
-
-    return this.saveProfile(reset);
-  }
-};
+    return profile.at
