@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="ms"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Login Pegawai Penilai</title><link rel="stylesheet" href="style.css?v=20260805-kp15"></head>
+<body><main class="center-page"><section class="panel login-panel"><p class="eyebrow">FIREBASE TEACHER MODULE • C01</p><h1>LOGIN PEGAWAI PENILAI</h1>
+<label>Nama Pegawai Penilai<input id="teacherName" type="text"></label><label>PIN Guru<input id="teacherPin" type="password" inputmode="numeric"></label>
+<p id="loginMessage" class="message"></p><button id="loginButton" class="primary full" type="button">LOG MASUK</button><button class="secondary full" type="button" onclick="location.href='../index.html'">KEMBALI</button><div class="info-box">PIN awal: <strong>1515</strong></div></section></main>
+<script type="module">
+const PIN_KEY="c01_teacher_pin_v2",SESSION_KEY="c01_teacher_session_v2";
+loginButton.addEventListener("click",loginTeacher);
+teacherPin.addEventListener("keydown",e=>{if(e.key==="Enter")loginTeacher()});
+async function loginTeacher(){const name=teacherName.value.trim(),pin=teacherPin.value.trim();loginMessage.textContent="";if(!name){loginMessage.textContent="Sila masukkan nama.";return}if(!pin){loginMessage.textContent="Sila masukkan PIN.";return}if(pin!==(localStorage.getItem(PIN_KEY)||"1515")){loginMessage.textContent="PIN tidak tepat.";return}loginButton.disabled=true;loginButton.textContent="SEDANG MENYAMBUNG...";try{const m=await import("../firebase-config.js?v=20260805-kp15");const user=await m.ensureFirebaseLogin();sessionStorage.setItem(SESSION_KEY,JSON.stringify({name,uid:user.uid,loginAt:new Date().toISOString()}));location.href="dashboard.html?v=20260805-kp15"}catch(error){console.error(error);loginMessage.textContent="Firebase gagal dimuatkan.";loginButton.disabled=false;loginButton.textContent="CUBA SEMULA"}}
+</script></body></html>
