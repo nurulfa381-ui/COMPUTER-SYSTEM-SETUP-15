@@ -4,58 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
   <title>Login Pelatih KP15 & KT15</title>
   <style>
-    :root{
-      --bg:#020712;--bg2:#08243c;--panel:#123d5f;--text:#fff;--muted:#e7f0f7;
-      --orange:#fbbf24;--green:#34d399;--red:#fb7185;--border:#5a86aa
-    }
-    *{box-sizing:border-box}
-    html{-webkit-text-size-adjust:100%}
-    body{
-      margin:0;min-height:100vh;font-family:Arial,sans-serif;color:var(--text);
-      background:radial-gradient(circle at 10% 8%,rgba(56,189,248,.18),transparent 30%),
-      linear-gradient(135deg,var(--bg),var(--bg2))
-    }
-    button,input{font:inherit}
-    button{cursor:pointer;touch-action:manipulation}
-    .page{min-height:100vh;display:grid;place-items:center;padding:20px}
-    .card{
-      width:min(760px,100%);padding:34px;border:2px solid var(--border);border-radius:28px;
-      background:linear-gradient(145deg,rgba(18,61,95,.98),rgba(7,28,46,.98));
-      box-shadow:0 28px 80px rgba(0,0,0,.45)
-    }
-    .eyebrow{margin:0;color:#7dd3fc;font-weight:800;letter-spacing:.12em}
-    h1{margin:10px 0 4px;font-size:clamp(2.5rem,6vw,5rem);line-height:1.05}
-    .subtitle{margin-bottom:26px;color:var(--muted);font-size:1.1rem;line-height:1.6}
-    .field{margin-top:18px}
-    .field label{display:block;margin-bottom:8px;font-weight:700}
-    input{
-      width:100%;min-height:58px;padding:14px 16px;border:2px solid var(--border);
-      border-radius:14px;color:#fff;background:#071c2e;outline:none;pointer-events:auto;
-      touch-action:manipulation;-webkit-user-select:text;user-select:text;font-size:16px
-    }
-    input:focus{border-color:var(--orange);box-shadow:0 0 0 4px rgba(251,191,36,.18)}
+    :root{--bg:#020712;--bg2:#08243c;--panel:#123d5f;--text:#fff;--muted:#e7f0f7;--orange:#fbbf24;--green:#34d399;--red:#fb7185;--border:#5a86aa}
+    *{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+    body{margin:0;min-height:100vh;font-family:Arial,sans-serif;color:var(--text);background:linear-gradient(135deg,var(--bg),var(--bg2))}
+    button,input{font:inherit}.page{min-height:100vh;display:grid;place-items:center;padding:20px}
+    .card{width:min(760px,100%);padding:34px;border:2px solid var(--border);border-radius:28px;background:linear-gradient(145deg,#123d5f,#071c2e)}
+    .eyebrow{margin:0;color:#7dd3fc;font-weight:800}.subtitle{color:var(--muted)}
+    label{display:block;margin-top:18px;font-weight:700}
+    input{width:100%;min-height:58px;margin-top:8px;padding:14px;border:2px solid var(--border);border-radius:14px;color:#fff;background:#071c2e}
     fieldset{margin-top:22px;padding:18px;border:2px solid var(--border);border-radius:16px}
-    legend{padding:0 8px;font-weight:800}
     .avatars{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
-    .avatar{
-      min-height:66px;border:2px solid var(--border);border-radius:14px;
-      color:#fff;background:var(--panel);font-size:2rem
-    }
-    .avatar.selected{border-color:var(--orange);box-shadow:0 0 0 4px rgba(251,191,36,.17)}
-    .message{min-height:28px;margin:16px 0 0;color:var(--red);font-weight:700}
-    .actions{display:grid;gap:12px;margin-top:14px}
-    .primary,.secondary{width:100%;min-height:58px;border-radius:15px;padding:14px 20px;font-weight:800}
+    .avatar{min-height:66px;border:2px solid var(--border);border-radius:14px;color:#fff;background:var(--panel);font-size:2rem}
+    .avatar.selected{border-color:var(--orange)}
+    .message{min-height:28px;color:var(--red);font-weight:700}
+    .primary,.secondary{width:100%;min-height:58px;margin-top:12px;border-radius:15px;padding:14px;font-weight:800}
     .primary{border:0;color:#111827;background:linear-gradient(135deg,#fde68a,var(--orange))}
     .secondary{border:2px solid #60a5fa;color:#fff;background:#1d4ed8}
-    .help{margin-top:20px;padding:15px;border-left:7px solid var(--green);border-radius:14px;background:rgba(52,211,153,.12);line-height:1.6}
-    @media(max-width:720px){
-      .page{display:block;padding:12px}.card{margin:10px auto;padding:22px}
-      .avatars{grid-template-columns:repeat(3,1fr)}
-    }
+    @media(max-width:720px){.page{display:block;padding:12px}.card{margin:10px auto;padding:22px}.avatars{grid-template-columns:repeat(3,1fr)}}
   </style>
 </head>
 <body>
@@ -64,20 +31,10 @@
       <p class="eyebrow">COMPUTER SYSTEM SET-UP • C01</p>
       <h1>LOGIN PELATIH</h1>
       <p class="subtitle">Masukkan nama penuh dan ID pelatih sebelum memulakan KP15 dan KT15.</p>
-
-      <form id="loginForm" novalidate>
-        <div class="field">
-          <label for="studentName">Nama Penuh Pelatih</label>
-          <input id="studentName" type="text" autocomplete="name" autocapitalize="words" placeholder="Contoh: Ahmad Bin Ali">
-        </div>
-
-        <div class="field">
-          <label for="studentId">ID Pelatih / No. Kad Pengenalan</label>
-          <input id="studentId" type="text" autocomplete="off" placeholder="Masukkan ID pelatih">
-        </div>
-
-        <fieldset>
-          <legend>Pilih Avatar</legend>
+      <form id="loginForm">
+        <label>Nama Penuh Pelatih<input id="studentName" type="text" autocomplete="name"></label>
+        <label>ID Pelatih<input id="studentId" type="text" autocomplete="off"></label>
+        <fieldset><legend>Pilih Avatar</legend>
           <div class="avatars">
             <button class="avatar selected" type="button" data-avatar="🧑‍💻">🧑‍💻</button>
             <button class="avatar" type="button" data-avatar="👩‍💻">👩‍💻</button>
@@ -87,104 +44,33 @@
             <button class="avatar" type="button" data-avatar="🦸">🦸</button>
           </div>
         </fieldset>
-
         <p id="message" class="message"></p>
-
-        <div class="actions">
-          <button class="primary" type="submit">SIMPAN DAN MASUK DASHBOARD</button>
-          <button class="secondary" type="button" onclick="location.href='index.html'">KEMBALI KE HALAMAN UTAMA</button>
-        </div>
+        <button id="loginButton" class="primary" type="submit">SIMPAN DAN MASUK DASHBOARD</button>
+        <button class="secondary" type="button" onclick="location.href='index.html'">KEMBALI</button>
       </form>
-
-      <div class="help">Versi ini tidak bergantung pada <b>storage.js</b>. Profil disimpan terus dalam pelayar.</div>
     </section>
   </main>
-
-  <script>
-    const KEY = "c01_kp15_profile_v1";
-    let selectedAvatar = "🧑‍💻";
-
-    document.querySelectorAll(".avatar").forEach(button=>{
-      button.addEventListener("click",()=>{
-        document.querySelectorAll(".avatar").forEach(x=>x.classList.remove("selected"));
-        button.classList.add("selected");
-        selectedAvatar = button.dataset.avatar;
-      });
-    });
-
-    function loadProfile(){
+  <script type="module">
+    import { C01FirebaseStorage } from "./firebase-storage.js?v=20260805-kp15";
+    const KEY="c01_kp15_profile_v1";
+    let selectedAvatar="🧑‍💻";
+    document.querySelectorAll(".avatar").forEach(button=>button.addEventListener("click",()=>{
+      document.querySelectorAll(".avatar").forEach(x=>x.classList.remove("selected"));
+      button.classList.add("selected");selectedAvatar=button.dataset.avatar;
+    }));
+    function loadLocal(){try{return JSON.parse(localStorage.getItem(KEY)||"null")}catch{return null}}
+    function saveLocal(data){const old=loadLocal()||{};const profile={name:"",id:"",avatar:"🧑‍💻",language:"ms",xp:50,coins:0,kp15Progress:0,scores:{},attempts:{},pendingAssessments:{},officialMarks:{},badges:["first-login"],...old,...data,updatedAt:new Date().toISOString()};localStorage.setItem(KEY,JSON.stringify(profile));sessionStorage.setItem("c01k15_session","active");return profile}
+    document.addEventListener("DOMContentLoaded",()=>{const p=loadLocal();if(!p)return;studentName.value=p.name||"";studentId.value=p.id||"";selectedAvatar=p.avatar||"🧑‍💻"});
+    loginForm.addEventListener("submit",async event=>{
+      event.preventDefault();const name=studentName.value.trim();const id=studentId.value.trim();
+      if(!name){message.textContent="Sila masukkan nama penuh.";return}
+      if(!id){message.textContent="Sila masukkan ID pelatih.";return}
+      loginButton.disabled=true;loginButton.textContent="SEDANG MENYIMPAN...";
       try{
-        return JSON.parse(localStorage.getItem(KEY) || "null");
-      }catch(error){
-        return null;
-      }
-    }
-
-    function saveProfile(data){
-      const old = loadProfile() || {};
-      const profile = {
-        name:"",
-        id:"",
-        avatar:"🧑‍💻",
-        language:"ms",
-        xp:50,
-        coins:0,
-        kp15Progress:0,
-        scores:{},
-        attempts:{},
-        pendingAssessments:{},
-        officialMarks:{},
-        badges:["first-login"],
-        ...old,
-        ...data,
-        updatedAt:new Date().toISOString()
-      };
-
-      localStorage.setItem(KEY, JSON.stringify(profile));
-      sessionStorage.setItem("c01k15_session","active");
-      return profile;
-    }
-
-    document.addEventListener("DOMContentLoaded",()=>{
-      const profile = loadProfile();
-      if(profile){
-        studentName.value = profile.name || "";
-        studentId.value = profile.id || "";
-        selectedAvatar = profile.avatar || "🧑‍💻";
-        document.querySelectorAll(".avatar").forEach(btn=>{
-          btn.classList.toggle("selected", btn.dataset.avatar === selectedAvatar);
-        });
-      }
-    });
-
-    loginForm.addEventListener("submit",event=>{
-      event.preventDefault();
-
-      const name = studentName.value.trim();
-      const id = studentId.value.trim();
-
-      if(!name){
-        message.textContent = "Sila masukkan nama penuh pelatih.";
-        studentName.focus();
-        return;
-      }
-
-      if(!id){
-        message.textContent = "Sila masukkan ID pelatih.";
-        studentId.focus();
-        return;
-      }
-
-      message.textContent = "";
-
-      saveProfile({
-        name,
-        id,
-        avatar:selectedAvatar,
-        language:"ms"
-      });
-
-      location.href = "dashboard.html";
+        const profile=saveLocal({name,id,avatar:selectedAvatar,language:"ms"});
+        await C01FirebaseStorage.saveStudentProfile({name,id,studentId:id,avatar:selectedAvatar,language:"ms",xp:profile.xp,coins:profile.coins,currentMission:15,repository:location.pathname.split("/").filter(Boolean)[0]});
+        location.href="dashboard.html";
+      }catch(error){console.error(error);message.textContent="Login Firebase gagal.";loginButton.disabled=false;loginButton.textContent="SIMPAN DAN MASUK DASHBOARD"}
     });
   </script>
 </body>
